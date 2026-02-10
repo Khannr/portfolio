@@ -1,0 +1,1311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connor Deng</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        @font-face {
+            font-family: 'Coinbase Sans';
+            src: url('fonts/Coinbase_Sans-Regular-web-1.32.woff2') format('woff2');
+            font-weight: 400;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'Coinbase Sans';
+            src: url('fonts/Coinbase_Sans-Medium-web-1.32.woff2') format('woff2');
+            font-weight: 500;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'Coinbase Sans';
+            src: url('fonts/Coinbase_Sans-Bold-web-1.32.woff2') format('woff2');
+            font-weight: 700;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'Coinbase Display';
+            src: url('fonts/Coinbase_Display-Regular-web-1.32.woff2') format('woff2');
+            font-weight: 400;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'Coinbase Display';
+            src: url('fonts/Coinbase_Display-Medium-web-1.32.woff2') format('woff2');
+            font-weight: 500;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'Coinbase Display';
+            src: url('fonts/Coinbase_Display-Bold-web-1.32.woff2') format('woff2');
+            font-weight: 700;
+            font-display: swap;
+        }
+
+        /* ============================================
+           THEME VARIABLES
+           ============================================ */
+        :root {
+            --font-display: 'Coinbase Display', sans-serif;
+            --font-body: 'Manrope', -apple-system, sans-serif;
+            --ease-out: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        /* Light theme (default) */
+        :root, [data-theme="light"] {
+            --color-ink: #1a1a1a;
+            --color-ink-light: #555;
+            --color-ink-muted: #888;
+            --color-paper: #fafaf8;
+            --color-rule: #e0e0dc;
+            --color-accent: #1a1a1a;
+        }
+
+        /* PECNA - Deep forest green energy theme */
+        [data-theme="pecna"] {
+            --color-ink: #e8f5e9;
+            --color-ink-light: #a5d6a7;
+            --color-ink-muted: #6a9a7a;
+            --color-paper: #1a6b55;
+            --color-rule: #287a62;
+            --color-accent: #c8e6c9;
+        }
+
+        /* IBM - Blue tech theme */
+        [data-theme="ibm"] {
+            --color-ink: #ffffff;
+            --color-ink-light: #a6c8ff;
+            --color-ink-muted: #78a9ff;
+            --color-paper: #0f62fe;
+            --color-rule: #2878ff;
+            --color-accent: #ffffff;
+        }
+
+        /* Zipline - Orange creamsicle theme */
+        [data-theme="zipline"] {
+            --color-ink: #e85a20;
+            --color-ink-light: #f07030;
+            --color-ink-muted: #c96830;
+            --color-paper: #ffe8d6;
+            --color-rule: #ffd4b8;
+            --color-accent: #ff5500;
+        }
+
+        /* Dark theme */
+        [data-theme="dark"] {
+            --color-ink: #f0f0f0;
+            --color-ink-light: #a0a0a0;
+            --color-ink-muted: #666;
+            --color-paper: #0a0a0a;
+            --color-rule: #2a2a2a;
+            --color-accent: #f0f0f0;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 18px;
+        }
+
+        body {
+            font-family: var(--font-body);
+            font-weight: 400;
+            color: var(--color-ink);
+            background: var(--color-paper);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+            transition: background-color 0.4s var(--ease-out), color 0.4s var(--ease-out);
+        }
+
+        /* Smooth theme transitions for all themed elements */
+        .intro-overlay,
+        .intro-text,
+        nav a,
+        .work-item,
+        .skill-tag,
+        footer,
+        .logo-icon .logo-crescent,
+        .logo-icon .logo-half {
+            transition: background-color 0.4s var(--ease-out),
+                        color 0.4s var(--ease-out),
+                        border-color 0.4s var(--ease-out),
+                        stroke 0.4s var(--ease-out),
+                        fill 0.4s var(--ease-out);
+        }
+
+        ::selection {
+            background: var(--color-ink);
+            color: var(--color-paper);
+        }
+
+        /* ============================================
+           INTRO ANIMATION
+           ============================================ */
+        .intro-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--color-paper);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            padding-left: 2rem;
+        }
+
+        .intro-overlay.fade-out {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s var(--ease-out);
+        }
+
+        .intro-text {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 400;
+            color: var(--color-ink);
+            letter-spacing: -0.01em;
+            opacity: 0;
+        }
+
+        .intro-text.visible {
+            animation: introFadeIn 0.6s var(--ease-out) forwards;
+        }
+
+        .intro-text.exit {
+            animation: introExit 0.5s var(--ease-out) forwards;
+        }
+
+        @keyframes introFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes introExit {
+            from {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateY(-12px);
+            }
+        }
+
+        /* ============================================
+           MAIN CONTENT (hidden until intro complete)
+           ============================================ */
+        .main-content {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .main-content.revealed {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Layout */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 4rem;
+        }
+
+        /* Logo - Fixed top left */
+        .logo-wrapper {
+            position: fixed;
+            top: 1.5rem;
+            left: 2rem;
+            z-index: 200;
+            opacity: 0;
+        }
+
+        .main-content.revealed .logo-wrapper {
+            animation: contentFadeIn 0.7s var(--ease-out-expo) forwards;
+            animation-delay: 0.05s;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            cursor: default;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            flex-shrink: 0;
+        }
+
+        .logo-icon svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .logo-icon .logo-crescent {
+            fill: none;
+            stroke: var(--color-ink);
+            stroke-width: 10;
+        }
+
+        .logo-icon .logo-half {
+            fill: var(--color-ink);
+        }
+
+        .logo-text {
+            font-family: var(--font-body);
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--color-ink);
+            white-space: nowrap;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+            max-width: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: max-width 0.7s var(--ease-out-expo),
+                        opacity 0.5s var(--ease-out),
+                        padding 0.7s var(--ease-out-expo);
+            padding-left: 0;
+        }
+
+        .logo:hover .logo-text {
+            max-width: 200px;
+            opacity: 1;
+            padding-left: 0.35rem;
+        }
+
+        /* Navigation - Fixed left side, vertical ladder */
+        nav {
+            position: fixed;
+            left: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 100;
+            opacity: 0;
+        }
+
+        .main-content.revealed nav {
+            animation: contentFadeIn 0.7s var(--ease-out-expo) forwards;
+            animation-delay: 0.2s;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        nav a {
+            font-size: 0.7rem;
+            font-weight: 500;
+            color: var(--color-ink-muted);
+            text-decoration: none;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            transition: color 0.3s var(--ease-out);
+        }
+
+        nav a:hover {
+            color: var(--color-ink-light);
+        }
+
+        nav a.active {
+            color: var(--color-accent);
+        }
+
+        /* Content reveal animations */
+        @keyframes contentFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Sections */
+        section {
+            padding: 5rem 0;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        section:not(.hero) {
+            max-width: 700px;
+        }
+
+        .main-content.revealed section {
+            animation: contentFadeIn 0.8s var(--ease-out-expo) forwards;
+        }
+
+        .main-content.revealed section:nth-of-type(1) { animation-delay: 0.15s; }
+        .main-content.revealed section:nth-of-type(2) { animation-delay: 0.25s; }
+        .main-content.revealed section:nth-of-type(3) { animation-delay: 0.35s; }
+        .main-content.revealed section:nth-of-type(4) { animation-delay: 0.45s; }
+
+
+        /* Hero */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            margin-left: 30%;
+            padding-top: 10vh;
+        }
+
+        /* Audience Selector */
+        .audience-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .audience-tab {
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--color-ink-muted);
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            transition: color 0.3s var(--ease-out);
+        }
+
+        .audience-tab:hover {
+            color: var(--color-ink-light);
+        }
+
+        .audience-tab.active {
+            color: var(--color-ink);
+        }
+
+        /* Hero Messages */
+        .hero-messages {
+            display: grid;
+            width: min(130%, calc(100vw - 4rem));
+        }
+
+        .hero-message {
+            grid-area: 1 / 1;
+            visibility: hidden;
+        }
+
+        .hero-message.active {
+            visibility: visible;
+        }
+
+        .hero h1 {
+            font-family: var(--font-display);
+            font-size: 3.8vw;
+            font-weight: 400;
+            line-height: 1.2;
+            color: var(--color-ink);
+        }
+
+        .hero h1 em {
+            font-style: italic;
+        }
+
+        .hero-subtitle {
+            margin-top: 2rem;
+            font-size: 1.1rem;
+            color: var(--color-ink-light);
+            max-width: 520px;
+        }
+
+        /* Hero CTA */
+        .hero-cta {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin-top: 2.5rem;
+        }
+
+        .cta-button {
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            font-weight: 500;
+            padding: 0.6rem 1.5rem;
+            border: 1px solid var(--color-ink);
+            border-radius: 2rem;
+            color: var(--color-ink);
+            text-decoration: none;
+            transition: background 0.2s var(--ease-out), color 0.2s var(--ease-out);
+        }
+
+        .cta-button:hover {
+            background: var(--color-ink);
+            color: var(--color-paper);
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.8rem;
+            color: #22874a;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #4ade80;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        /* Section Headers */
+        .section-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--color-ink-muted);
+            margin-bottom: 2.5rem;
+        }
+
+        /* Work Section */
+        .work-item {
+            margin-bottom: 3.5rem;
+        }
+
+        .work-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .work-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .work-company {
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            font-weight: 400;
+            color: var(--color-ink);
+        }
+
+        .work-dates {
+            font-size: 0.85rem;
+            color: var(--color-ink-muted);
+        }
+
+        .work-role {
+            font-family: var(--font-display);
+            font-size: 4.25rem;
+            font-weight: 400;
+            color: var(--color-ink);
+            line-height: 1.1;
+            margin-bottom: 1rem;
+            white-space: nowrap;
+            margin-right: -50vw;
+        }
+
+        .work-description {
+            font-size: 0.95rem;
+            color: var(--color-ink-light);
+            line-height: 1.75;
+            max-width: 480px;
+        }
+
+        /* Background Section */
+        .values-section {
+            max-width: none !important;
+            text-align: right;
+        }
+
+        .values-intro {
+            max-width: 420px;
+            font-size: 0.95rem;
+            color: var(--color-ink);
+            line-height: 1.75;
+            margin-top: 3rem;
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+
+        .values-outro {
+            max-width: 420px;
+            font-size: 0.95rem;
+            color: var(--color-ink);
+            line-height: 1.75;
+            margin-left: auto;
+            text-align: right;
+        }
+
+        .values-list {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 1rem;
+        }
+
+        .value-word {
+            font-family: var(--font-display);
+            font-size: clamp(3rem, 6vw, 5rem);
+            font-weight: 400;
+            color: var(--color-ink);
+            line-height: 1.1;
+        }
+
+        .background-section {
+            max-width: none !important;
+        }
+
+        .background-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6rem;
+        }
+
+        .education-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .yale-logo {
+            color: var(--color-ink);
+            flex-shrink: 0;
+        }
+
+        .education-school {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--color-ink);
+            line-height: 1.2;
+        }
+
+        .education-year {
+            font-size: 0.85rem;
+            color: var(--color-ink);
+        }
+
+        .education-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .education-label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--color-ink);
+            display: block;
+            margin-bottom: 0.35rem;
+        }
+
+        .education-major {
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            color: var(--color-ink);
+        }
+
+        .education-certs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .cert-tag {
+            font-size: 0.85rem;
+            padding: 0.3rem 0.7rem;
+            color: var(--color-ink);
+            background: var(--color-rule);
+            border-radius: 0.25rem;
+            letter-spacing: 0.01em;
+        }
+
+        .background-grid {
+            display: grid;
+            gap: 3rem;
+        }
+
+        .background-item h3 {
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            font-weight: 400;
+            margin-bottom: 1rem;
+        }
+
+        .background-item p {
+            font-size: 0.95rem;
+            color: var(--color-ink-light);
+            line-height: 1.75;
+        }
+
+        .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .skill-tag {
+            font-size: 0.8rem;
+            padding: 0.4rem 0.9rem;
+            background: transparent;
+            border: 1px solid var(--color-rule);
+            border-radius: 2rem;
+            color: var(--color-ink-light);
+            transition: all 0.2s var(--ease-out);
+        }
+
+        .skill-tag:hover {
+            border-color: var(--color-ink);
+            color: var(--color-ink);
+        }
+
+        /* Contact Section */
+        .contact-content {
+            max-width: 480px;
+        }
+
+        .contact-content p {
+            font-size: 1rem;
+            color: var(--color-ink-light);
+            margin-bottom: 2rem;
+        }
+
+        .contact-links {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .contact-link {
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            color: var(--color-ink);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: opacity 0.2s var(--ease-out);
+        }
+
+        .contact-link:hover {
+            opacity: 0.6;
+        }
+
+        .contact-link span {
+            font-family: var(--font-body);
+            font-size: 0.8rem;
+            color: var(--color-ink-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Footer */
+        footer {
+            padding: 4rem 0;
+            border-top: 1px solid var(--color-rule);
+            margin-top: 2rem;
+            opacity: 0;
+        }
+
+        .main-content.revealed footer {
+            animation: contentFadeIn 0.7s var(--ease-out-expo) forwards;
+            animation-delay: 0.5s;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .footer-name {
+            font-family: var(--font-display);
+            font-size: 1rem;
+        }
+
+        .footer-note {
+            font-size: 0.8rem;
+            color: var(--color-ink-muted);
+        }
+
+        /* ============================================
+           THEME DIAL
+           ============================================ */
+        .theme-dial {
+            position: fixed;
+            bottom: 2rem;
+            left: 2rem;
+            z-index: 200;
+            opacity: 0;
+        }
+
+        .main-content.revealed .theme-dial {
+            animation: contentFadeIn 0.7s var(--ease-out-expo) forwards;
+            animation-delay: 0.6s;
+        }
+
+        .theme-dial-track {
+            position: relative;
+            width: 100px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .theme-dial-track::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 6px;
+            right: 6px;
+            height: 2px;
+            background: var(--color-rule);
+            transform: translateY(-50%);
+            transition: background-color 0.4s var(--ease-out);
+        }
+
+        .theme-dial-dots {
+            position: relative;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .theme-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: 2px solid var(--color-ink-muted);
+            background: transparent;
+            cursor: pointer;
+            padding: 0;
+            transition: all 0.3s var(--ease-out);
+            position: relative;
+            z-index: 1;
+        }
+
+        .theme-dot:hover {
+            border-color: var(--color-ink);
+            transform: scale(1.1);
+        }
+
+        .theme-dot.active {
+            background: var(--color-ink);
+            border-color: var(--color-ink);
+        }
+
+        .theme-dot:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px var(--color-paper), 0 0 0 5px var(--color-ink-muted);
+        }
+
+        /* Responsive */
+        @media (max-width: 1100px) {
+            .hero {
+                margin-left: 15%;
+            }
+        }
+
+        @media (max-width: 800px) {
+            .hero {
+                margin-left: 5%;
+            }
+
+            .hero-messages {
+                width: calc(90vw - 2rem);
+            }
+        }
+
+        @media (max-width: 600px) {
+            html {
+                font-size: 16px;
+            }
+
+            .container {
+                padding: 0 1.5rem;
+            }
+
+            .logo-wrapper {
+                left: 1.5rem;
+            }
+
+            .intro-overlay {
+                padding-left: 1.5rem;
+            }
+
+            nav ul {
+                gap: 1.25rem;
+            }
+
+            .hero {
+                justify-content: center;
+                margin-left: 0;
+            }
+
+            .hero-messages {
+                width: 100%;
+            }
+
+
+            section {
+                padding: 3.5rem 0;
+            }
+
+            .work-header {
+                flex-direction: column;
+                gap: 0.25rem;
+            }
+
+            .theme-dial {
+                bottom: 1.5rem;
+                left: 1.5rem;
+            }
+
+            .theme-dial-track {
+                width: 80px;
+            }
+
+            .theme-dot {
+                width: 10px;
+                height: 10px;
+            }
+
+            nav {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Load saved theme immediately to prevent flash -->
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                document.documentElement.setAttribute('data-theme', savedTheme);
+            }
+        })();
+    </script>
+
+    <!-- Intro Animation Overlay -->
+    <div class="intro-overlay">
+        <div class="intro-text">Connor Deng</div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Theme Dial - Fixed bottom left -->
+        <div class="theme-dial">
+            <div class="theme-dial-track">
+                <div class="theme-dial-dots">
+                    <button class="theme-dot active" data-theme="light" aria-label="Light theme"></button>
+                    <button class="theme-dot" data-theme="pecna" aria-label="PECNA theme"></button>
+                    <button class="theme-dot" data-theme="ibm" aria-label="IBM theme"></button>
+                    <button class="theme-dot" data-theme="zipline" aria-label="Zipline theme"></button>
+                    <button class="theme-dot" data-theme="dark" aria-label="Dark theme"></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Logo - Fixed top left -->
+        <div class="logo-wrapper">
+            <a href="#intro" class="logo">
+                <div class="logo-icon">
+                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <!-- C (crescent outline) -->
+                        <path class="logo-crescent" d="M46 12 A38 38 0 1 0 46 88 A28 28 0 1 1 46 12"/>
+                        <!-- D (filled semicircle) -->
+                        <path class="logo-half" d="M54 8 L54 92 A42 42 0 0 0 54 8"/>
+                    </svg>
+                </div>
+                <span class="logo-text">Connor Deng</span>
+            </a>
+        </div>
+
+        <!-- Navigation - Fixed left side -->
+        <nav>
+            <ul>
+                <li><a href="#intro" class="active">Intro</a></li>
+                <li><a href="#work">Work</a></li>
+                <li><a href="#values">Values</a></li>
+                <li><a href="#background">Background</a></li>
+                <li><a href="#references">References</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+
+        <div class="container">
+            <section id="intro" class="hero">
+                <div class="audience-selector">
+                    <button class="audience-tab active" data-audience="anyone">For anyone</button>
+                    <button class="audience-tab" data-audience="recruiters">Recruiters</button>
+                    <button class="audience-tab" data-audience="hiring">Hiring Managers</button>
+                    <button class="audience-tab" data-audience="technical">Technical</button>
+                    <button class="audience-tab" data-audience="friends">Friends</button>
+                </div>
+
+                <div class="hero-messages">
+                    <div class="hero-message active" data-audience="anyone">
+                        <h1>Hello there, I'm a student who likes making beautiful things that help people.</h1>
+                        <div class="hero-cta">
+                            <a href="#contact" class="cta-button">Get in touch</a>
+                            <span class="status-indicator"><span class="status-dot"></span>Open to opportunities</span>
+                        </div>
+                    </div>
+
+                    <div class="hero-message" data-audience="recruiters">
+                        <h1>I'm an intern with experience across engineering, design, operations, and controls at companies large and small.</h1>
+                        <div class="hero-cta">
+                            <a href="#contact" class="cta-button">Get in touch</a>
+                            <span class="status-indicator"><span class="status-dot"></span>Open to opportunities</span>
+                        </div>
+                    </div>
+
+                    <div class="hero-message" data-audience="hiring">
+                        <h1>I ship things that have real impact and I care about the results.</h1>
+                        <div class="hero-cta">
+                            <a href="#contact" class="cta-button">Get in touch</a>
+                            <span class="status-indicator"><span class="status-dot"></span>Open to opportunities</span>
+                        </div>
+                    </div>
+
+                    <div class="hero-message" data-audience="technical">
+                        <h1>Dashboards, pipelines, databases. I like making systems work.</h1>
+                        <div class="hero-cta">
+                            <a href="#contact" class="cta-button">Get in touch</a>
+                            <span class="status-indicator"><span class="status-dot"></span>Open to opportunities</span>
+                        </div>
+                    </div>
+
+                    <div class="hero-message" data-audience="friends">
+                        <h1>You know who I am.</h1>
+                        <div class="hero-cta">
+                            <a href="#contact" class="cta-button">Get in touch</a>
+                            <span class="status-indicator"><span class="status-dot"></span>Open to opportunities</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="work">
+                <p class="section-label">Work</p>
+
+                <div class="work-item">
+                    <div class="work-header">
+                        <h2 class="work-company">Panasonic Energy (PECNA)</h2>
+                        <span class="work-dates">Summer 2025</span>
+                    </div>
+                    <p class="work-role">SCADA Intern (DTG)</p>
+                    <p class="work-description">Worked with operators and process owners across Tesla's Gigafactory to identify pain points and build digital tools around them. Built dashboards tracking takt time and throughput across 200+ machines, replaced 250+ paper-based forms with live machine-fed tracking, and designed alarm and escalation pipelines for critical processes.</p>
+                </div>
+
+                <div class="work-item">
+                    <div class="work-header">
+                        <h2 class="work-company">Dwight Hall Student Executive Committee</h2>
+                        <span class="work-dates">2025 - Present</span>
+                    </div>
+                    <p class="work-role">Membership Coordinator</p>
+                    <p class="work-description">Managed relationships across 32 student groups, serving as a primary liaison to surface needs and resolve operational blockers. Coordinated 3 campus-wide service bazaars reaching 500+ students and evaluated 120+ funding proposals totaling $40K.</p>
+                </div>
+
+                <div class="work-item">
+                    <div class="work-header">
+                        <h2 class="work-company">Yale Energy Sciences Institute</h2>
+                        <span class="work-dates">Summer 2022</span>
+                    </div>
+                    <p class="work-role">Materials Sciences Intern</p>
+                    <p class="work-description">Assembled and tested catalytic electrodes, synthesized nanoparticle-based catalysts, and ran photoelectrochemical CO₂ reduction trials using cobalt phthalocyanine catalysts in the Hailiang Wang Lab.</p>
+                </div>
+
+                <div class="work-item">
+                    <div class="work-header">
+                        <h2 class="work-company">Yale SWAT Team</h2>
+                        <span class="work-dates">Jan - May 2025</span>
+                    </div>
+                    <p class="work-role">Accessibility Assistant</p>
+                    <p class="work-description">Served as the primary accessibility contact across 4 courses, producing and quality-checking 30+ documents to meet WCAG 2.1 and ADA standards for 300+ students. Standardized workflows for accessibility fixes using Adobe Acrobat, Microsoft Office, and SensusAccess.</p>
+                </div>
+
+                <div class="work-item">
+                    <div class="work-header">
+                        <h2 class="work-company">Yale Undergraduate Foosball Club</h2>
+                        <span class="work-dates">2025 - Present</span>
+                    </div>
+                    <p class="work-role">Founder and President</p>
+                    <p class="work-description">Started Yale's first foosball club and grew it from around 30 to 120 members in 3 weeks. Designed the marketing campaign, built partnerships with local businesses for student discounts, and secured funding to sustain programming across all 14 residential colleges.</p>
+                </div>
+            </section>
+
+            <section id="values" class="values-section">
+                <p class="section-label">Values</p>
+
+                <div class="values-list">
+                    <span class="value-word">Frictionless</span>
+                    <span class="value-word">Beautiful</span>
+                    <span class="value-word">Intentional</span>
+                </div>
+
+                <p class="values-intro">I think about these a lot, not just when I'm designing or building something, but in how I move through things day to day. At Yale, I'm surrounded by people from wildly different backgrounds and disciplines, and that shapes how I see most things. The way someone approaches a problem says more than the solution itself.</p>
+
+                <p class="values-outro">I've worked in technical roles and I'm glad I have, because it gave me a perspective I think more people should have. But I've always been more drawn to learning fast and making things that feel right than to any one skill set. This site came out of a lot of time spent looking at work from product designers, things I've stumbled across online that stuck with me, and most importantly, people I've worked with.</p>
+            </section>
+
+            <section id="background" class="background-section">
+                <p class="section-label">Background</p>
+
+                <div class="background-row">
+                    <div class="background-item education-item">
+                        <h3>Education</h3>
+                        <div class="education-header">
+                            <svg class="yale-logo" viewBox="0 0 502 216" width="60" height="26" xmlns="http://www.w3.org/2000/svg">
+                                <path fill="currentColor" d="M166.357,45.372l-50.924,85.802v57.718c5.862,13.888,20.678,15.738,34.877,16.357v8.024H50.617v-8.024c14.198-0.619,31.482-2.777,36.111-12.035v-59.571L34.876,45.988C25.927,31.173,17.285,26.237,0,25.001v-8.024h86.729v8.024c-16.359,0.925-21.605,4.014-26.234,7.719l48.148,83.33l47.222-83.024c-4.938-3.703-11.419-7.1-27.777-8.024v-8.024h74.073v8.024C185.494,25.62,175,31.173,166.357,45.372z M267.591,216.051c-16.665,0-24.691-11.421-25.308-19.443c-10.495,11.11-24.073,19.443-37.036,19.443c-16.667,0-30.866-10.186-30.866-27.775c0-8.645,2.161-17.596,6.483-24.693l61.419-22.223v-22.84c0-13.888-6.482-27.16-20.371-27.16c-8.333,0-16.358,10.183-16.974,25.926l-27.78,4.627v-3.083c9.259-27.781,39.816-38.581,54.629-38.581c28.087,0,38.272,14.813,37.964,37.653l-0.925,64.814c-0.309,12.655,6.48,15.741,12.654,15.741c4.937,0,9.875-3.086,15.741-8.949v8.949C290.432,206.484,278.396,216.051,267.591,216.051z M205.864,165.743c-1.235,4.937-2.16,9.258-2.16,16.049c0,9.258,5.247,18.516,15.431,18.516c9.259,0,14.506-3.083,22.84-9.566l0.308-41.669C234.259,152.777,214.507,161.422,205.864,165.743z M300,213.273v-7.1c13.888-0.925,17.898-4.011,20.371-9.261V37.036c0-10.494-1.545-14.813-22.841-16.666v-6.172L354.013,0l1.85,5.25l-8.949,11.11v180.553c3.086,6.175,8.949,8.336,21.604,9.261v7.1H300z M442.59,215.742c-32.406,0-57.407-25.617-57.407-61.42c0-43.828,26.854-73.767,64.817-73.767c30.554,0,47.53,17.288,47.53,44.755v5.555l-83.333-0.616c-0.616,3.394-0.928,8.952-0.928,15.74c0,31.481,19.754,52.16,45.991,52.16c15.738,0,23.765-5.556,36.108-16.049l4.63,7.097C482.407,205.249,467.9,215.742,442.59,215.742z M445.371,90.126c-15.435,0-26.234,12.344-29.939,31.787l54.324-0.616C469.755,104.939,459.567,90.126,445.371,90.126z"/>
+                            </svg>
+                            <div>
+                                <p class="education-school">Yale University</p>
+                                <p class="education-year">Class of 2027</p>
+                            </div>
+                        </div>
+                        <div class="education-group">
+                            <span class="education-label">Major</span>
+                            <p class="education-major">Global Affairs</p>
+                        </div>
+                        <div class="education-group">
+                            <span class="education-label">Certificates</span>
+                            <div class="education-certs">
+                                <span class="cert-tag">Energy Studies</span>
+                                <span class="cert-tag">Statistics & Data Science</span>
+                                <span class="cert-tag">Mandarin Chinese</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="background-item">
+                        <h3>Skills</h3>
+                        <div class="skills-list">
+                            <span class="skill-tag">R</span>
+                            <span class="skill-tag">Stata</span>
+                            <span class="skill-tag">Python</span>
+                            <span class="skill-tag">SQL</span>
+                            <span class="skill-tag">HTML</span>
+                            <span class="skill-tag">Ignition</span>
+                            <span class="skill-tag">Jira</span>
+                            <span class="skill-tag">Figma</span>
+                            <span class="skill-tag">Adobe Acrobat</span>
+                            <span class="skill-tag">Microsoft Office</span>
+                            <span class="skill-tag">Claude Code</span>
+                            <span class="skill-tag">Power BI</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="references">
+                <p class="section-label">References</p>
+
+                <div class="contact-content">
+                    <p style="color: var(--color-ink)">Available upon request. Happy to connect you with supervisors, professors, or colleagues who can speak to my work.</p>
+                </div>
+            </section>
+
+            <section id="contact">
+                <p class="section-label">Contact</p>
+
+                <div class="contact-content">
+                    <p>Always open to opportunities. Or just say hi.</p>
+
+                    <div class="contact-links">
+                        <a href="mailto:cjd78@yale.edu" class="contact-link">
+                            <svg class="contact-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 4L12 13 2 4"/></svg>
+                            cjd78@yale.edu
+                        </a>
+                        <a href="https://linkedin.com/in/connor-deng" class="contact-link">
+                            <svg class="contact-icon" viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                            linkedin.com/in/connor-deng
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <footer>
+                <div class="footer-content">
+                    <span class="footer-name">Connor</span>
+                    <span class="footer-note">© 2025</span>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        // Intro animation sequence
+        const introOverlay = document.querySelector('.intro-overlay');
+        const introText = document.querySelector('.intro-text');
+        const mainContent = document.querySelector('.main-content');
+
+        // Timeline:
+        // 0ms      - Page loads, blank
+        // 500ms    - Name fades in
+        // 1600ms   - Name starts exit animation (slides up + fades out)
+        // 1675ms   - Overlay fades out, main content revealed
+
+        setTimeout(() => {
+            introText.classList.add('visible');
+        }, 500);
+
+        setTimeout(() => {
+            introText.classList.remove('visible');
+            introText.classList.add('exit');
+        }, 1600);
+
+        setTimeout(() => {
+            introOverlay.classList.add('fade-out');
+            mainContent.classList.add('revealed');
+        }, 1675);
+
+        // Smooth scroll for nav links
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const target = document.querySelector(link.getAttribute('href'));
+                target.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        // Scroll-based active section highlighting
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('nav a');
+
+        function updateActiveSection() {
+            const scrollPos = window.scrollY + window.innerHeight / 3;
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.offsetHeight;
+                const sectionId = section.getAttribute('id');
+
+                if (scrollPos >= sectionTop && scrollPos < sectionTop + sectionHeight) {
+                    navLinks.forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href') === '#' + sectionId) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
+            });
+        }
+
+        window.addEventListener('scroll', updateActiveSection);
+        updateActiveSection();
+
+        // Audience selector functionality
+        const audienceTabs = document.querySelectorAll('.audience-tab');
+        const heroMessages = document.querySelectorAll('.hero-message');
+
+        audienceTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const audience = tab.dataset.audience;
+                const currentActive = document.querySelector('.hero-message.active');
+                const nextMessage = document.querySelector(`.hero-message[data-audience="${audience}"]`);
+
+                if (currentActive === nextMessage) return;
+
+                // Update active tab
+                audienceTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+
+                // Swap messages instantly
+                currentActive.classList.remove('active');
+                nextMessage.classList.add('active');
+            });
+        });
+
+        // Theme dial functionality
+        const themeDots = document.querySelectorAll('.theme-dot');
+
+        // Set initial active state based on saved theme
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        themeDots.forEach(dot => {
+            if (dot.dataset.theme === savedTheme) {
+                dot.classList.add('active');
+            } else {
+                dot.classList.remove('active');
+            }
+        });
+
+        // Handle theme switching
+        themeDots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                const theme = dot.dataset.theme;
+
+                // Update data attribute on html element
+                document.documentElement.setAttribute('data-theme', theme);
+
+                // Save to localStorage
+                localStorage.setItem('theme', theme);
+
+                // Update active dot
+                themeDots.forEach(d => d.classList.remove('active'));
+                dot.classList.add('active');
+            });
+        });
+
+        // Keyboard navigation for theme dial
+        document.querySelector('.theme-dial-dots').addEventListener('keydown', (e) => {
+            const dots = Array.from(themeDots);
+            const currentIndex = dots.findIndex(d => d.classList.contains('active'));
+            let newIndex = currentIndex;
+
+            if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+                newIndex = Math.min(currentIndex + 1, dots.length - 1);
+            } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                newIndex = Math.max(currentIndex - 1, 0);
+            }
+
+            if (newIndex !== currentIndex) {
+                dots[newIndex].click();
+                dots[newIndex].focus();
+            }
+        });
+    </script>
+</body>
+</html>
