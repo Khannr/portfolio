@@ -132,7 +132,7 @@
         /* Smooth theme transitions for all themed elements */
         .intro-overlay,
         .intro-text,
-        nav a,
+        nav button,
         .work-item,
         .skill-tag,
         footer,
@@ -319,7 +319,7 @@
             gap: 0.75rem;
         }
 
-        nav a {
+        nav button {
             font-size: 0.7rem;
             font-weight: 500;
             color: var(--color-ink-muted);
@@ -327,13 +327,18 @@
             letter-spacing: 0.05em;
             text-transform: uppercase;
             transition: color 0.3s var(--ease-out);
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            font-family: inherit;
         }
 
-        nav a:hover {
+        nav button:hover {
             color: var(--color-ink-light);
         }
 
-        nav a.active {
+        nav button.active {
             color: var(--color-accent);
         }
 
@@ -967,12 +972,12 @@
         <!-- Navigation - Fixed left side -->
         <nav>
             <ul>
-                <li><a href="#intro" class="active">Intro</a></li>
-                <li><a href="#work">Work</a></li>
-                <li><a href="#values">Values</a></li>
-                <li><a href="#background">Background</a></li>
-                <li><a href="#references">References</a></li>
-                <li><a href="#contact">Contact</a></li>
+                <li><button data-scroll="intro" class="active">Intro</button></li>
+                <li><button data-scroll="work">Work</button></li>
+                <li><button data-scroll="values">Values</button></li>
+                <li><button data-scroll="background">Background</button></li>
+                <li><button data-scroll="references">References</button></li>
+                <li><button data-scroll="contact">Contact</button></li>
             </ul>
         </nav>
 
@@ -990,7 +995,7 @@
                     <div class="hero-message active" data-audience="anyone">
                         <h1>Hello there, I'm a student who likes making beautiful things that help people.</h1>
                         <div class="hero-cta">
-                            <a href="#contact" class="cta-button">Get in touch</a>
+                            <button class="cta-button" data-scroll="contact">Get in touch</button>
                             <span class="status-indicator"><span class="status-dot"></span>Open to opportunities</span>
                         </div>
                     </div>
@@ -998,7 +1003,7 @@
                     <div class="hero-message" data-audience="recruiters">
                         <h1>I'm an intern with experience across engineering, design, operations, and controls at companies large and small.</h1>
                         <div class="hero-cta">
-                            <a href="#contact" class="cta-button">Get in touch</a>
+                            <button class="cta-button" data-scroll="contact">Get in touch</button>
                             <span class="status-indicator"><span class="status-dot"></span>Open to opportunities</span>
                         </div>
                     </div>
@@ -1006,7 +1011,7 @@
                     <div class="hero-message" data-audience="hiring">
                         <h1>I ship things that have real impact and I care about the results.</h1>
                         <div class="hero-cta">
-                            <a href="#contact" class="cta-button">Get in touch</a>
+                            <button class="cta-button" data-scroll="contact">Get in touch</button>
                             <span class="status-indicator"><span class="status-dot"></span>Open to opportunities</span>
                         </div>
                     </div>
@@ -1014,7 +1019,7 @@
                     <div class="hero-message" data-audience="technical">
                         <h1>Dashboards, pipelines, databases. I like making systems work.</h1>
                         <div class="hero-cta">
-                            <a href="#contact" class="cta-button">Get in touch</a>
+                            <button class="cta-button" data-scroll="contact">Get in touch</button>
                             <span class="status-indicator"><span class="status-dot"></span>Open to opportunities</span>
                         </div>
                     </div>
@@ -1022,7 +1027,7 @@
                     <div class="hero-message" data-audience="friends">
                         <h1>You know who I am.</h1>
                         <div class="hero-cta">
-                            <a href="#contact" class="cta-button">Get in touch</a>
+                            <button class="cta-button" data-scroll="contact">Get in touch</button>
                             <span class="status-indicator"><span class="status-dot"></span>Open to opportunities</span>
                         </div>
                     </div>
@@ -1203,18 +1208,17 @@
             mainContent.classList.add('revealed');
         }, 1675);
 
-        // Smooth scroll for nav links
-        document.querySelectorAll('nav a').forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                const target = document.querySelector(link.getAttribute('href'));
+        // Smooth scroll for all data-scroll buttons
+        document.querySelectorAll('[data-scroll]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const target = document.getElementById(btn.dataset.scroll);
                 target.scrollIntoView({ behavior: 'smooth' });
             });
         });
 
         // Scroll-based active section highlighting
         const sections = document.querySelectorAll('section[id]');
-        const navLinks = document.querySelectorAll('nav a');
+        const navButtons = document.querySelectorAll('nav button');
 
         function updateActiveSection() {
             const scrollPos = window.scrollY + window.innerHeight / 3;
@@ -1225,10 +1229,10 @@
                 const sectionId = section.getAttribute('id');
 
                 if (scrollPos >= sectionTop && scrollPos < sectionTop + sectionHeight) {
-                    navLinks.forEach(link => {
-                        link.classList.remove('active');
-                        if (link.getAttribute('href') === '#' + sectionId) {
-                            link.classList.add('active');
+                    navButtons.forEach(btn => {
+                        btn.classList.remove('active');
+                        if (btn.dataset.scroll === sectionId) {
+                            btn.classList.add('active');
                         }
                     });
                 }
