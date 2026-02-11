@@ -365,14 +365,14 @@
             max-width: 700px;
         }
 
-        .main-content.revealed section {
+        .main-content.revealed section:first-of-type {
             animation: contentFadeIn 0.8s var(--ease-out-expo) forwards;
+            animation-delay: 0.15s;
         }
 
-        .main-content.revealed section:nth-of-type(1) { animation-delay: 0.15s; }
-        .main-content.revealed section:nth-of-type(2) { animation-delay: 0.25s; }
-        .main-content.revealed section:nth-of-type(3) { animation-delay: 0.35s; }
-        .main-content.revealed section:nth-of-type(4) { animation-delay: 0.45s; }
+        section.in-view {
+            animation: contentFadeIn 0.8s var(--ease-out-expo) forwards;
+        }
 
 
         /* Hero */
@@ -1299,6 +1299,20 @@
                 themeDots.forEach(d => d.classList.remove('active'));
                 dot.classList.add('active');
             });
+        });
+
+        // Scroll-triggered section reveals
+        const sectionObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('in-view');
+                    sectionObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.15 });
+
+        document.querySelectorAll('section:not(:first-of-type)').forEach(s => {
+            sectionObserver.observe(s);
         });
 
         // Keyboard navigation for theme dial
